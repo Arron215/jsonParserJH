@@ -3,13 +3,15 @@ import copy
 #Maybe replace pprint with something to PDF
 from pprint import pprint
 from pathlib import Path
-
+import tkinter as tk
+from tkinter import filedialog
+from pathlib import Path
 
 #Start venv
 #source ./.venv/bin/activate
 
-def open_file():
-    with open('./test_input/conv001', 'r', encoding='utf-8') as file:
+def open_file(file_path):
+    with open(file_path, 'r', encoding='utf-8') as file:
         cur_convs = json.load(file)
         get_mapping(cur_convs)
 
@@ -116,5 +118,15 @@ def add_author_parts(author, parts):
         with open("./outputs/conv001/conv001_raw", "a", encoding="utf-8") as file:
             file.write(formatted_output)
 
-#TODO: Make it auto exit and stuff. Add main or whatever that thing is
-open_file()
+if __name__ == "__main__":
+    root = tk.Tk()
+    root.withdraw()  # Hides the empty main tkinter window
+
+    selected = filedialog.askopenfilename(title="Select a file")
+
+    if selected:
+        file_path = Path(selected)
+        print(f"Selected: {file_path}")
+    else:
+        print("No file selected.")
+    open_file(file_path)
